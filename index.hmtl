@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Geometricle</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+    <!--geometricle title-->
+    <div class="geometricle"><span class="perpendicular">=</span>NUMBERATOR</div>
+
+    <!--header-->
+    <div class="header">
+        <p>Reach the final number using mathematical operators</p>
+    </div>
+
+    <!--button and daily prompt-->
+    <button id="startButton" class="button">Begin today's challenge</button>
+
+    <div id="content" class="hidden">
+        <div id="gameInstructions" class="gameInstructions hidden">
+            <h2>How to play:</h2>
+            <p>Given a starting number (on the left), apply the 4 orders of operation (+, -, x, /) to get to the final number (on the right). This game does not follow PEMDAS standards; rather, each operation will be applied to the number separately.</p>
+        </div>
+        
+        <div class="slot-info">
+            <p id="startingNumber"></p>
+            <div id="slots">
+                <div class="slot"></div>
+                <div class="slot"></div>
+                <div class="slot"></div>
+                <div class="slot"></div>
+                <div class="slot"></div>
+            </div>
+            <p id="endingNumber"></p>
+        </div>
+    </div>
+    <p id="currentNumber"></p>
+
+    <div id="leaderboard" class="hidden">
+        <h2>Leaderboard</h2>
+        <ol id="leaderboardList"></ol>
+    </div>
+      
+    <p id="currentDate"></p>
+
+    <script src="script.js"></script>
+</body>
+</html>
