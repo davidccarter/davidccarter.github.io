@@ -33,6 +33,14 @@
             </div>
             <p id="endingNumber"></p>
         </div>
+
+        <div id="operators">
+            <div class="operator" data-symbol="+">+</div>
+            <div class="operator" data-symbol="-">-</div>
+            <div class="operator" data-symbol="x">x</div>
+            <div class="operator" data-symbol="/">/</div>
+        </div>
+
     </div>
     <p id="currentNumber"></p>
 
