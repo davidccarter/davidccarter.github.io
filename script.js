@@ -193,6 +193,11 @@ document.addEventListener("DOMContentLoaded", function() {
     // Set the leaderboard entry text
     listItem.textContent = userName + ": " + time.toFixed(2) + " seconds";
     leaderboardList.appendChild(listItem);
+
+    // Store the leaderboard data in local storage
+    var leaderboardData = JSON.parse(localStorage.getItem("leaderboardData")) || [];
+    leaderboardData.push({ userName: userName, time: time });
+    localStorage.setItem("leaderboardData", JSON.stringify(leaderboardData));
   }
 
   // Attach the startGame event listener to the start button
@@ -252,5 +257,48 @@ document.addEventListener("DOMContentLoaded", function() {
       }
       updateCurrentNumber();
     }
+  });
+
+  // Function to update starting number, ending number, and leaderboard at midnight every day
+  function updateDailyData() {
+    var currentDate = new Date().toLocaleDateString();
+    var storedDate = localStorage.getItem("leaderboardDate");
+  
+    if (currentDate !== storedDate) {
+      // Clear the starting number and ending number
+      var startingNumberElement = document.getElementById("startingNumber");
+      var endingNumberElement = document.getElementById("endingNumber");
+      startingNumberElement.textContent = "";
+      endingNumberElement.textContent = "";
+
+      // Clear the leaderboard
+      var leaderboardList = document.getElementById("leaderboardList");
+      leaderboardList.innerHTML = "";
+
+      // Clear the leaderboard data in local storage
+      localStorage.removeItem("leaderboardData");
+
+      // Store the current date in local storage
+      localStorage.setItem("leaderboardDate", currentDate);
+    }
+  }
+
+  // Update daily data when the page loads
+  updateDailyData();
+
+  // Set an interval to check and update daily data every minute
+  setInterval(updateDailyData, 60000);
+
+  // Retrieve and display the leaderboard data from local storage
+  var leaderboardData = JSON.parse(localStorage.getItem("leaderboardData")) || [];
+  leaderboardData.forEach(function(entry) {
+    var userName = entry.userName;
+    var time = entry.time;
+
+    var listItem = document.createElement("li");
+    listItem.textContent = userName + ": " + time.toFixed(2) + " seconds";
+
+    var leaderboardList = document.getElementById("leaderboardList");
+    leaderboardList.appendChild(listItem);
   });
 });
