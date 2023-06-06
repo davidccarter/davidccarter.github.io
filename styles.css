@@ -220,18 +220,22 @@ body {
 
 .operator[data-symbol="+"] {
     background-color: rgb(130, 255, 130);
+    color: white;
 }
 
 .operator[data-symbol="-"] {
     background-color: rgb(255, 120, 120);
+    color: white;
 }
 
 .operator[data-symbol="x"] {
     background-color: rgb(232, 232, 90);
+    color: white;
 }
 
 .operator[data-symbol="/"] {
     background-color: rgb(58, 58, 58);
+    color: white;
 }
 
 .operator:hover {
