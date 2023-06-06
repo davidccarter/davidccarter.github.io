@@ -64,31 +64,73 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   }
   
+  var operators = document.querySelectorAll(".operator");
 
+  // Function to handle operator button click
+  function handleOperatorClick() {
+    var symbol = this.getAttribute("data-symbol");
+
+    // Find the first empty slot
+    var emptySlot = null;
+    for (var i = 0; i < slots.length; i++) {
+      var slot = slots[i];
+      if (!slot.querySelector(".slot-image")) {
+        emptySlot = slot;
+        break;
+      }
+    }
+
+    if (emptySlot) {
+      var image = document.createElement("div");
+      image.textContent = symbol;
+      image.className = "slot-image";
+      image.style.fontSize = "40px";
+      emptySlot.appendChild(image);
+
+      // Set the background color based on the symbol
+      if (symbol === "x") {
+        emptySlot.style.backgroundColor = "rgb(232, 232, 90)";
+      } else if (symbol === "+") {
+        emptySlot.style.backgroundColor = "rgb(130, 255, 130)";
+      } else if (symbol === "-") {
+        emptySlot.style.backgroundColor = "rgb(255, 120, 120)";
+      } else if (symbol === "/") {
+        emptySlot.style.backgroundColor = "rgb(58, 58, 58)";
+      }
+
+      updateCurrentNumber();
+    }
+  }
+
+  // Attach event listener to each operator button
+  operators.forEach(function(operator) {
+    operator.addEventListener("click", handleOperatorClick);
+  });
+  
   function startGame() {
     var startButton = document.getElementById("startButton");
     var header = document.querySelector(".header");
     var content = document.getElementById("content");
     var startingNumberElement = document.getElementById("startingNumber");
     var endingNumberElement = document.getElementById("endingNumber");
-
+  
     // Hide the header
     header.style.display = "none";
-
+  
     // Hide the start button
     startButton.style.display = "none";
-
+  
     // Show the content
     content.classList.remove("hidden");
-
+  
     // Show the game instructions
     var gameInstructions = document.getElementById("gameInstructions");
     gameInstructions.classList.remove("hidden");
-
+  
     // Generate a random starting number (between 2 and 6)
     startingNumber = Math.floor(Math.random() * 5) + 2;
     startingNumberElement.textContent = "starting number: " + startingNumber;
-
+  
     // Set the ending number based on the starting number
     var endingNumbers;
     if (startingNumber === 2) {
@@ -108,30 +150,48 @@ document.addEventListener("DOMContentLoaded", function() {
     } else if (startingNumber === 9) {
       endingNumbers = [0, 1.0, 2.0];
     }
-
+  
     // Generate a random index to select an ending number from the array
     var randomIndex = Math.floor(Math.random() * endingNumbers.length);
     var endingNumber = endingNumbers[randomIndex];
     endingNumberElement.textContent = "desired number: " + endingNumber;
-
+  
     updateCurrentNumber();
-
+  
     // Start the timer
     startTime = Date.now();
     timerInterval = setInterval(updateTimer, 1000);
+  
+    // Get the current date
+    var currentDate = new Date().toLocaleDateString();
+    var storedDate = localStorage.getItem("leaderboardDate");
+  
+    if (currentDate !== storedDate) {
+      // Clear the leaderboard if it's a new day
+      var leaderboardList = document.getElementById("leaderboardList");
+      leaderboardList.innerHTML = "";
+  
+      // Store the current date in local storage
+      localStorage.setItem("leaderboardDate", currentDate);
+    }
   }
 
   function updateTimer() {
     endTime = Date.now();
-    var timeDiff = Math.floor((endTime - startTime) / 1000);
+    var timeDiff = (endTime - startTime) / 1000;
     var timerElement = document.getElementById("timer");
-    timerElement.textContent = "Time elapsed: " + timeDiff + " seconds";
+    timerElement.textContent = "Time elapsed: " + timeDiff.toFixed(2) + " seconds";
   }
 
   function updateLeaderboard(time) {
     var leaderboardList = document.getElementById("leaderboardList");
     var listItem = document.createElement("li");
-    listItem.textContent = time + " seconds";
+
+    // Generate a random user name
+    var userName = "User" + Math.floor(Math.random() * 100000);
+
+    // Set the leaderboard entry text
+    listItem.textContent = userName + ": " + time.toFixed(2) + " seconds";
     leaderboardList.appendChild(listItem);
   }
 
