@@ -186,19 +186,23 @@ document.addEventListener("DOMContentLoaded", function() {
   function updateLeaderboard(time) {
     var leaderboardList = document.getElementById("leaderboardList");
     var listItem = document.createElement("li");
-
-    // Generate a random user name
     var userName = "User" + Math.floor(Math.random() * 100000);
-
-    // Set the leaderboard entry text
     listItem.textContent = userName + ": " + time.toFixed(2) + " seconds";
     leaderboardList.appendChild(listItem);
 
-    // Store the leaderboard data in local storage
     var leaderboardData = JSON.parse(localStorage.getItem("leaderboardData")) || [];
     leaderboardData.push({ userName: userName, time: time });
     localStorage.setItem("leaderboardData", JSON.stringify(leaderboardData));
-  }
+
+    // Add emojis based on placement
+    if (leaderboardList.children.length === 1) {
+      listItem.innerHTML = "🥇 " + listItem.innerHTML;
+    } else if (leaderboardList.children.length === 2) {
+      listItem.innerHTML = "🥈 " + listItem.innerHTML;
+    } else if (leaderboardList.children.length === 3) {
+      listItem.innerHTML = "🥉 " + listItem.innerHTML;
+    }
+}
 
   // Attach the startGame event listener to the start button
   document.getElementById("startButton").addEventListener("click", startGame);
